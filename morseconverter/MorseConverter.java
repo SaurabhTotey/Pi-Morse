@@ -1,5 +1,6 @@
 package morseconverter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
  */
 public class MorseConverter {
     
-    //A map for characters to MorseSymbols
+    //A map for characters to MorseSymbols; contains combination of symbols, but excludes spaces
     public static HashMap<Character, MorseSymbol[]> charMap = new HashMap<Character, MorseSymbol[]>();
     //Loads the character to symbol map with the international standard of morse combinations
     static {
@@ -39,6 +40,7 @@ public class MorseConverter {
         charMap.put('x', new MorseSymbol[]{ MorseSymbol.DASH, MorseSymbol.DOT, MorseSymbol.DOT, MorseSymbol.DASH });
         charMap.put('y', new MorseSymbol[]{ MorseSymbol.DASH, MorseSymbol.DOT, MorseSymbol.DASH, MorseSymbol.DASH });
         charMap.put('z', new MorseSymbol[]{ MorseSymbol.DASH, MorseSymbol.DASH, MorseSymbol.DOT, MorseSymbol.DOT });
+        charMap.put(' ', new MorseSymbol[]{ MorseSymbol.WORD_SPACE });
         //Initializes numeralMorseSymbolPool with the ordered combination of symbols that all numbers follow
         MorseSymbol[] numeralMorseSymbolPool = new MorseSymbol[15];
         for (int i = 0; i < 15; i++) {
@@ -50,4 +52,41 @@ public class MorseConverter {
             charMap.put((char) (i % 10 + '0'), Arrays.copyOfRange(numeralMorseSymbolPool, 10 - i, 15 - i));
         }
     }
+    
+    /**
+     * This method gets the morse symbols for the given letter
+     * This method is different than calling .get for the charMap because this method also inserts necessary spaces
+     */
+    public static MorseSymbol[] getSymbolsForLetter(char letter) {
+        MorseSymbol[] dotsAndDashes = charMap.get(Character.toLowerCase(letter));
+        MorseSymbol[] allLetterSymbols = new MorseSymbol[dotsAndDashes.length * 2 - 1];
+        for (int i = 0; i < allLetterSymbols.length; i++) {
+            allLetterSymbols[i] = i % 2 == 0? dotsAndDashes[i / 2] : MorseSymbol.SYMBOL_SPACE;
+        }
+        return allLetterSymbols;
+    }
+    
+    /**
+     * This method gets the morse symbols for the given text
+     */
+    public static MorseSymbol[] getSymbolsForText(String text) {
+        ArrayList<MorseSymbol> allTextSymbols = new ArrayList<MorseSymbol>();
+        String[] words = text.split(" ");
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            for (int j = 0; j < word.length(); j++) {
+                char letter = word.charAt(j);
+                allTextSymbols.addAll(Arrays.asList(getSymbolsForLetter(letter)));
+                if (j != word.length() - 1) {
+                    allTextSymbols.add(MorseSymbol.LETTER_SPACE);
+                }
+            }
+            if (i != words.length - 1) {
+                allTextSymbols.add(MorseSymbol.WORD_SPACE);
+            }
+        }
+        Object[] symbolsAsObjects = allTextSymbols.toArray();
+        return Arrays.copyOf(symbolsAsObjects, symbolsAsObjects.length, MorseSymbol[].class);
+    }
+    
 }
