@@ -25,22 +25,60 @@ public class MessageEmitter {
     static {
         outputPin.setShutdownOptions(true, PinState.LOW);
     }
+    //How much duration is left before the MessageEmitter is free: if is 0, MessageEmitter is free
+    static private int durationLeftToEmit = 0;
+    //How many milliseconds each duration is
+    static private final long millisecondsPerDuration = 500;
     
     /**
-     * Emits the given message in morse code
+     * Emits the given message in morse code given the message is sendable and the Raspberry Pi is available
      * LED lights up for dots and dashes
      */
     @RequestMapping(value = "/pi-morse", method = RequestMethod.POST)
-    public static void emitMessage(@RequestParam(name = "message", defaultValue = "") String message) {
-        for (MorseSymbol symbol : MorseConverter.getSymbolsForText(sanitizeMessageForOutput(message))) {
-            System.out.print(symbol);
-            outputPin.setState(symbol.state);
+    public static EmissionStatus emitMessage(@RequestParam(name = "message", defaultValue = "") String message) {
+        //Previous message is sending
+        if (durationLeftToEmit > 0) {
+            return new EmissionStatus(false, "A previous message is still printing... Please wait for " + timeUntilAvailable() + " more milliseconds before trying again.");
+        }
+        //Input sanitation
+        String sendableMessage = sanitizeMessageForOutput(message);
+        //Given message is not sendable
+        if (sendableMessage.isEmpty()) {
+            return new EmissionStatus(false, "Malformed or unsendable message... :(");
+        }
+        //Starts a new thread to interact with the Raspberry Pi GPIO and send the message
+        new Thread(() -> {
+            MorseSymbol[] encodedMessage = MorseConverter.getSymbolsForText(sendableMessage);
+            for (MorseSymbol symbol : encodedMessage) {
+                durationLeftToEmit += symbol.duration;
+            }
+            for (MorseSymbol symbol : encodedMessage) {
+                System.out.print(symbol);
+                outputPin.setState(symbol.state);
+                try {
+                    Thread.sleep(symbol.duration * millisecondsPerDuration);
+                } catch (InterruptedException ignored) {}
+                durationLeftToEmit -= symbol.duration;
+            }
+            //Ensures that the pin is off and that the Pi is available to send another message
+            outputPin.setState(false);
+            durationLeftToEmit = 0;
+        }).start();
+        //Waits for the Raspberry Pi to start sending the message
+        while (durationLeftToEmit == 0) {
             try {
-                //Each symbol lasts its duration * .5 seconds
-                Thread.sleep(symbol.duration * 500);
+                Thread.sleep(5);
             } catch (InterruptedException ignored) {}
         }
-        outputPin.setState(false);
+        //Messaging thread to interface with Raspberry Pi GPIO has successfully started
+        return new EmissionStatus(true, "Message is sending! It will have finished sending in " + timeUntilAvailable() + " milliseconds.");
+    }
+
+    /**
+     * How much time in milliseconds is remaining before the Raspberry Pi is free again
+     */
+    public static long timeUntilAvailable() {
+        return durationLeftToEmit * millisecondsPerDuration;
     }
 
     /**
