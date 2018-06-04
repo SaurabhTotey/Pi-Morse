@@ -1,1 +1,0 @@
-A simple project that has a Raspberry Pi light up an LED in morse code with a given message.

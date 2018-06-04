@@ -1,4 +1,4 @@
-package morseconverter;
+package com.saurabhtotey.pimorse.morseconverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;

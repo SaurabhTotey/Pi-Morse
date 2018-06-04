@@ -1,4 +1,4 @@
-package morseconverter;
+package com.saurabhtotey.pimorse.morseconverter;
 
 
 /**
@@ -16,7 +16,7 @@ public enum MorseSymbol {
     /**
      * Creates a MorseSymbol given how long it lasts
      */
-    private MorseSymbol(int duration, boolean state) {
+    MorseSymbol(int duration, boolean state) {
         this.duration = duration;
         this.state = state;
     }
