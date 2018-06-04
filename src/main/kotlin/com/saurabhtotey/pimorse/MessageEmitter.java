@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The class that handles sending out morse signals to the LED on the Raspberry Pi
+ * Also handles receiving the REST requests over HTTP to signal the Pi to send the message
  */
 @RestController
 public class MessageEmitter {
@@ -32,7 +33,9 @@ public class MessageEmitter {
     
     /**
      * Emits the given message in morse code given the message is sendable and the Raspberry Pi is available
-     * LED lights up for dots and dashes
+     * Will fail if Raspberry Pi is unavailable or the message is not sendable
+     * Success doesn't mean message has been sent, but rather that the Pi is in process of sending it
+     * LED lights up for dots and dashes based on the morse pattern of the given message
      */
     @RequestMapping(value = "/pi-morse", method = RequestMethod.POST)
     public static EmissionStatus emitMessage(@RequestParam(name = "message", defaultValue = "") String message) {

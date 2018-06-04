@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class MorseConverter {
     
     //A map for characters to MorseSymbols; contains combination of symbols, but excludes spaces
-    public static HashMap<Character, MorseSymbol[]> charMap = new HashMap<Character, MorseSymbol[]>();
+    public static HashMap<Character, MorseSymbol[]> charMap = new HashMap<>();
     //Loads the character to symbol map with the international standard of morse combinations
     static {
         //Initializes charMap with all the morse combinations of letters
@@ -70,7 +70,7 @@ public class MorseConverter {
      * This method gets the morse symbols for the given text
      */
     public static MorseSymbol[] getSymbolsForText(String text) {
-        ArrayList<MorseSymbol> allTextSymbols = new ArrayList<MorseSymbol>();
+        ArrayList<MorseSymbol> allTextSymbols = new ArrayList<>();
         String[] words = text.split(" ");
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
