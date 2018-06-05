@@ -18,9 +18,10 @@ apply plugin: 'kotlin-spring'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'application'
 
 group = 'com.saurabhtotey'
-version = '0.0.1'
+version = '1.0.0'
 sourceCompatibility = 1.8
 compileKotlin {
     kotlinOptions {
@@ -41,6 +42,7 @@ repositories {
 
 
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter')
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('com.fasterxml.jackson.module:jackson-module-kotlin')
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

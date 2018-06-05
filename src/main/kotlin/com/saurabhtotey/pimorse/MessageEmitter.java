@@ -5,12 +5,12 @@ import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import com.saurabhtotey.pimorse.morseconverter.MorseConverter;
-import com.saurabhtotey.pimorse.morseconverter.MorseSymbol;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.saurabhtotey.pimorse.morseconverter.MorseConverter;
+import com.saurabhtotey.pimorse.morseconverter.MorseSymbol;
 
 /**
  * The class that handles sending out morse signals to the LED on the Raspberry Pi
@@ -80,14 +80,14 @@ public class MessageEmitter {
     /**
      * How much time in milliseconds is remaining before the Raspberry Pi is free again
      */
-    public static long timeUntilAvailable() {
+    private static long timeUntilAvailable() {
         return durationLeftToEmit * millisecondsPerDuration;
     }
 
     /**
      * Sanitizes a given input string so that it can be turned into morse without hassle
      */
-    public static String sanitizeMessageForOutput(String input) {
+    private static String sanitizeMessageForOutput(String input) {
         String cleanString = "";
         for (int i = 0; i < input.length(); i++) {
             char containedChar = Character.toLowerCase(input.charAt(i));
