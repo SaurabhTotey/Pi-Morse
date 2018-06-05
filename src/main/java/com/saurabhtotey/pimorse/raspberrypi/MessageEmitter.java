@@ -29,7 +29,7 @@ public class MessageEmitter {
             return new EmissionStatus(false, "A previous message is still printing... Please wait for " + timeUntilAvailable() + " more milliseconds before trying again.");
         }
         //Input sanitation
-        String sendableMessage = sanitizeMessageForOutput(message);
+        String sendableMessage = MorseConverter.sanitizeMessageForOutput(message);
         //Given message is not sendable
         if (sendableMessage.isEmpty() || sendableMessage.length() > 20) {
             return new EmissionStatus(false, "Malformed or unsendable message... :(");
@@ -73,21 +73,6 @@ public class MessageEmitter {
      */
     private static long timeUntilAvailable() {
         return durationLeftToEmit * millisecondsPerDuration;
-    }
-
-    /**
-     * Sanitizes a given input string so that it can be turned into morse without hassle
-     */
-    private static String sanitizeMessageForOutput(String input) {
-        String cleanString = "";
-        for (int i = 0; i < input.length(); i++) {
-            char containedChar = Character.toLowerCase(input.charAt(i));
-            if (!MorseConverter.charMap.containsKey(containedChar)) {
-                continue;
-            }
-            cleanString += containedChar;
-        }
-        return cleanString;
     }
 
 }

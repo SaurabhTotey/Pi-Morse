@@ -52,6 +52,21 @@ public class MorseConverter {
             charMap.put((char) (i % 10 + '0'), Arrays.copyOfRange(numeralMorseSymbolPool, 10 - i, 15 - i));
         }
     }
+
+    /**
+     * Sanitizes a given input string so that it can be turned into morse without hassle
+     */
+    public static String sanitizeMessageForOutput(String input) {
+        String cleanString = "";
+        for (int i = 0; i < input.length(); i++) {
+            char containedChar = Character.toLowerCase(input.charAt(i));
+            if (!MorseConverter.charMap.containsKey(containedChar)) {
+                continue;
+            }
+            cleanString += containedChar;
+        }
+        return cleanString;
+    }
     
     /**
      * This method gets the morse symbols for the given letter
@@ -71,7 +86,7 @@ public class MorseConverter {
      */
     public static MorseSymbol[] getSymbolsForText(String text) {
         ArrayList<MorseSymbol> allTextSymbols = new ArrayList<>();
-        String[] words = text.split(" ");
+        String[] words = sanitizeMessageForOutput(text).split(" ");
         for (int i = 0; i < words.length; i++) {
             String word = words[i];
             for (int j = 0; j < word.length(); j++) {
