@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pi-Morse by Saurabh Totey</title>
+        <link rel="stylesheet" href="main.css"/>
+    </head>
+    <body>
+        <br/>
+        <div>
+            <h1>Pi-Morse Communicator by Saurabh Totey</h1>
+        </div>
+        <br/>
+        <div>
+            <h3>Type text here to see what it will look like in Morse Code!</h3>
+            <p>
+                <textarea title="Text Preview Input" class="text-input" id="text-preview-input" cols="20" rows="5"></textarea>
+                &emsp;===>&emsp;
+                <textarea title="Text Preview Output" class="text-output" id="text-preview-output" cols="20" rows="5" disabled></textarea>
+            </p>
+        </div>
+        <br/>
+        <div>
+            <h3>Type text here to submit it to the Raspberry Pi in Saurabh's Room in Morse Code.</h3>
+            <textarea title="Text Submission Input" class="text-input" id="text-submission-input" cols="20" rows="1"></textarea>
+            <br/>
+            <button>Submit</button>
+            <br/>
+            <p>Response:&nbsp;<textarea title="Text Submission Output" class="text-output" id="text-submission-output" cols="100" rows="1" disabled></textarea></p>
+        </div>
+    </body>
+    <script src="main.js"></script>
+</html>

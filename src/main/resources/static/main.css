@@ -1,0 +1,23 @@
+body {
+    text-align: center;
+    margin: auto;
+    background-color: black;
+}
+
+div {
+    background-color: lightblue;
+    width: 80%;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
