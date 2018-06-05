@@ -1,4 +1,4 @@
-package com.saurabhtotey.pimorse.morseconverter;
+package com.saurabhtotey.pimorse.web.morseconverter;
 
 
 /**

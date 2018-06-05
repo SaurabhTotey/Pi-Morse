@@ -1,4 +1,4 @@
-package com.saurabhtotey.pimorse;
+package com.saurabhtotey.pimorse.web;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.saurabhtotey.pimorse.morseconverter.MorseConverter;
-import com.saurabhtotey.pimorse.morseconverter.MorseSymbol;
+import com.saurabhtotey.pimorse.web.morseconverter.MorseConverter;
+import com.saurabhtotey.pimorse.web.morseconverter.MorseSymbol;
 
 /**
  * The class that handles sending out morse signals to the LED on the Raspberry Pi
