@@ -1,17 +1,12 @@
-package com.saurabhtotey.pimorse.web.morseconverter;
+package com.saurabhtotey.pimorse.morseconverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * A class is basically just a namespace that handles converting text or characters to morse
  */
-@RestController
 public class MorseConverter {
     
     //A map for characters to MorseSymbols; contains combination of symbols, but excludes spaces
@@ -74,8 +69,7 @@ public class MorseConverter {
     /**
      * This method gets the morse symbols for the given text
      */
-    @RequestMapping(value = "/pi-morse", method = RequestMethod.GET)
-    public static MorseSymbol[] getSymbolsForText(@RequestParam(name = "text") String text) {
+    public static MorseSymbol[] getSymbolsForText(String text) {
         ArrayList<MorseSymbol> allTextSymbols = new ArrayList<>();
         String[] words = text.split(" ");
         for (int i = 0; i < words.length; i++) {

@@ -1,21 +1,16 @@
-package com.saurabhtotey.pimorse.web;
+package com.saurabhtotey.pimorse.raspberrypi;
 
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import com.saurabhtotey.pimorse.web.morseconverter.MorseConverter;
-import com.saurabhtotey.pimorse.web.morseconverter.MorseSymbol;
+import com.saurabhtotey.pimorse.web.EmissionStatus;
+import com.saurabhtotey.pimorse.morseconverter.MorseConverter;
+import com.saurabhtotey.pimorse.morseconverter.MorseSymbol;
 
 /**
  * The class that handles sending out morse signals to the LED on the Raspberry Pi
- * Also handles receiving the REST requests over HTTP to signal the Pi to send the message
  */
-@RestController
 public class MessageEmitter {
 
     //The utility object that represents the pin that will be used to output electrical signals
@@ -26,13 +21,9 @@ public class MessageEmitter {
     static private final long millisecondsPerDuration = 500;
     
     /**
-     * Emits the given message in morse code given the message is sendable and the Raspberry Pi is available
-     * Will fail if Raspberry Pi is unavailable or the message is not sendable
-     * Success doesn't mean message has been sent, but rather that the Pi is in process of sending it
-     * LED lights up for dots and dashes based on the morse pattern of the given message
+     * Gives the message to the Raspberry Pi to emit to the LED
      */
-    @RequestMapping(value = "/pi-morse", method = RequestMethod.POST)
-    public static EmissionStatus emitMessage(@RequestParam(name = "message", defaultValue = "") String message) {
+    public static EmissionStatus emitMessage(String message) {
         //Previous message is sending
         if (durationLeftToEmit > 0) {
             return new EmissionStatus(false, "A previous message is still printing... Please wait for " + timeUntilAvailable() + " more milliseconds before trying again.");
@@ -40,7 +31,7 @@ public class MessageEmitter {
         //Input sanitation
         String sendableMessage = sanitizeMessageForOutput(message);
         //Given message is not sendable
-        if (sendableMessage.isEmpty()) {
+        if (sendableMessage.isEmpty() || sendableMessage.length() > 20) {
             return new EmissionStatus(false, "Malformed or unsendable message... :(");
         }
         //Initializes the GPIO pin if uninitialized
