@@ -1,6 +1,5 @@
 package com.saurabhtotey.pimorse.web;
 
-import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
@@ -18,14 +17,9 @@ import com.saurabhtotey.pimorse.web.morseconverter.MorseSymbol;
  */
 @RestController
 public class MessageEmitter {
-    
-    //The actual utility object that represents the Raspberry Pi's GPIO board
-    static private final GpioController gpio = GpioFactory.getInstance();
-    //The actual utility object that represents the pin that will be used to output electrical signals
-    static private final GpioPinDigitalOutput outputPin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED Communicator", PinState.LOW);
-    static {
-        outputPin.setShutdownOptions(true, PinState.LOW);
-    }
+
+    //The utility object that represents the pin that will be used to output electrical signals
+    static private GpioPinDigitalOutput outputPin;
     //How much duration is left before the MessageEmitter is free: if is 0, MessageEmitter is free
     static private int durationLeftToEmit = 0;
     //How many milliseconds each duration is
@@ -48,6 +42,10 @@ public class MessageEmitter {
         //Given message is not sendable
         if (sendableMessage.isEmpty()) {
             return new EmissionStatus(false, "Malformed or unsendable message... :(");
+        }
+        //Initializes the GPIO pin if uninitialized
+        if (outputPin == null) {
+            outputPin = GpioFactory.getInstance().provisionDigitalOutputPin(RaspiPin.GPIO_01, "LED Communicator", PinState.LOW);
         }
         //Starts a new thread to interact with the Raspberry Pi GPIO and send the message
         new Thread(() -> {

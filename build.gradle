@@ -29,5 +29,5 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-actuator')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-    compile group: 'com.pi4j', name: 'pi4j-gpio-extension', version: '0.0.5'
+    compile group: 'com.pi4j', name: 'pi4j-core', version: '0.0.5'
 }
