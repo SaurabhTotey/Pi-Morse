@@ -6,13 +6,30 @@ package com.saurabhtotey.pimorse.web;
 class EmissionStatus {
 
     //Whether the emission was a success
-    boolean success;
+    private boolean success;
     //The details of the message
-    String details;
+    private String details;
 
+    /**
+     * Creating an EmissionStatus takes in its fields
+     */
     EmissionStatus(boolean success, String details) {
         this.success = success;
         this.details = details;
+    }
+
+    /**
+     * Gets this object's success status
+     */
+    public boolean getSuccess() {
+        return this.success;
+    }
+
+    /**
+     * Gets this object's message
+     */
+    public String getDetails() {
+        return this.details;
     }
 
 }

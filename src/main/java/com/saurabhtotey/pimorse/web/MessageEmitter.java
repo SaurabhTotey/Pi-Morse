@@ -51,6 +51,7 @@ public class MessageEmitter {
         }
         //Starts a new thread to interact with the Raspberry Pi GPIO and send the message
         new Thread(() -> {
+            System.out.println(sendableMessage);
             MorseSymbol[] encodedMessage = MorseConverter.getSymbolsForText(sendableMessage);
             for (MorseSymbol symbol : encodedMessage) {
                 durationLeftToEmit += symbol.duration;
@@ -66,6 +67,7 @@ public class MessageEmitter {
             //Ensures that the pin is off and that the Pi is available to send another message
             outputPin.setState(false);
             durationLeftToEmit = 0;
+            System.out.println();
         }).start();
         //Waits for the Raspberry Pi to start sending the message
         while (durationLeftToEmit == 0) {
