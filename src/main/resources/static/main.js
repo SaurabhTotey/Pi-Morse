@@ -24,3 +24,9 @@ submissionButton.onclick = function () {
         });
     });
 };
+submissionInput.onkeypress = function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        submissionButton.onclick();
+    }
+};
