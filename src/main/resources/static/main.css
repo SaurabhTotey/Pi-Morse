@@ -14,6 +14,7 @@ div {
 
 textarea {
     resize: none;
+    text-align: center;
 }
 
 p {
